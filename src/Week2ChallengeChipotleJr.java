@@ -66,11 +66,20 @@ public class Week2ChallengeChipotleJr {
         int idx = 1, size = 0;
 
         for (String itm : Order) {
+            // compute the amount for an item
             amt = computeAmount(itm);
+
+            // remove the last delimiter (", ") from an item string
             size = itm.length();
             itm = itm.substring(0, size-2);
+
+            // print out the ingredients for an item
             System.out.printf("\nBurrito %d: %s\n", idx, itm);
+
+            // print out the amount for an item
             System.out.printf("Amount is $%.2f\n", amt);
+
+            // compute the total amount
             total += amt;
             idx++;
         }
