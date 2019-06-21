@@ -28,18 +28,17 @@ public class Week2ChallengeChipotleJr {
     // initialize ingredients arrays
     private static String[] RiceArray = {"white rice", "brown rice", "none"};
     private static String[] MeatArray = {"chicken", "steak", "carnidas", "chorizo",
-                                         "sofritas", "veggies"};
+            "sofritas", "veggies"};
     private static String[] BeanArray = {"pinto bean", "black bean", "none"};
     private static String[] SalsaArray = {"mild salsa", "medium salsa", "hot salsa", "none", "all salsa"};
     private static String[] VeggieArray = {"lettuce", "fajita veggies", "none", "all veggies"};
 
 
     // main program
-    public static void main (String[] args){
+    public static void main(String[] args) {
         int MAX_ORDER = 25;
-        int noOrders = 0;
         String[] Order = new String[MAX_ORDER];
-        String ingred = "";
+        String ingred;
 
         int szRice = RiceArray.length;
         int szMeat = MeatArray.length;
@@ -48,8 +47,7 @@ public class Week2ChallengeChipotleJr {
         int szVeggies = VeggieArray.length;
 
         for (int i = 0; i < MAX_ORDER; i++) {
-            // randomly choose each ingredients
-            ingred = "Burrito " + (i+1) + ": ";
+            ingred = "";                             // initalized ingred string
 
             ingred += pickItem(szRice, RiceArray);
             ingred += pickItem(szMeat, MeatArray);
@@ -61,22 +59,41 @@ public class Week2ChallengeChipotleJr {
             ingred = ingred + pickItem("guac");
             ingred = ingred + pickItem("queso");
             Order[i] = ingred + pickItem("sour cream"); // save in the Order array
-            ingred = "";
         }
 
-        for (String itm : Order)
-            System.out.println(itm);
+        // compute the price of each burrito and their sum
+        double amt = 0, total = 0;
+        int idx = 1, size = 0;
+
+        for (String itm : Order) {
+            amt = computeAmount(itm);
+            size = itm.length();
+            itm = itm.substring(0, size-2);
+            System.out.printf("\nBurrito %d: %s\n", idx, itm);
+            System.out.printf("Amount is $%.2f\n", amt);
+            total += amt;
+            idx++;
+        }
+
+        System.out.printf("\nTotal amount for %d burritos is $%.2f\n", MAX_ORDER, total);
     }
 
+    /*
+     * This method will get a random item of the given array.
+     * If a randomly selected item is "none" then it returns an empty string.
+     * Otherwise, it will return a string that is item concatenated with ", "
+     * (which will be used as a delimiter later in the program).
+     */
 
-    public static String pickItem(int varMax, String[]varArray){
-        String choice="", tmp="";
+    public static String pickItem(int varMax, String[] varArray) {
+        String choice = "", tmp = "";
         Random random = new Random();
 
-        // randomly select rice
+        // randomly select an item between 0 and max size of the array (not inclusive)
         int idx = random.nextInt(varMax);
 
         tmp = varArray[idx];
+
         if (tmp.compareToIgnoreCase("none") == 0)
             choice = "";
         else
@@ -85,18 +102,50 @@ public class Week2ChallengeChipotleJr {
         return (choice);
     }
 
-    public static String pickItem(String varItem){
+    /*
+     * This method will randomly either choose an item or not.
+     * If it is selected then it will return a string that is passed string
+     * concatenated with ", " (which will be used as a delimiter later
+     * in the program). Otherwise, it will return an empty string.
+     */
+
+    public static String pickItem(String varItem) {
         String choice;
         Random random = new Random();
 
         // randomly select yes or no
         if (random.nextBoolean())
-             choice = varItem + ", ";
+            choice = varItem + ", ";
         else
-             choice = "";
+            choice = "";
 
         return (choice);
     }
 
+    /*
+     * This method will compute the price of a burrito and print out the ingredients
+     * and price of a burrito. The base price of a burrito is $3.00 and each
+     * ingredient is $0.50.
+     *
+     * String varItem has ',' as a item delimiter.
+     */
+    public static double computeAmount(String varItem) {
+        double totalAmt = 3.00;                   // base price
+        String ingred = varItem;
+        int j = 0, numItems = 0;
+
+        // compute the number of items using ',' as a delimiter
+        while (ingred.contains(",")) {
+            j = ingred.indexOf(",", 0);
+            numItems++;
+            ingred = ingred.substring(j + 1);
+        }
+
+        totalAmt = totalAmt + (0.5 * numItems);
+
+        return (totalAmt);
+
+    }
 
 }
+
