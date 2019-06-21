@@ -36,7 +36,7 @@ public class Week2ChallengeChipotleJr {
 
     // main program
     public static void main (String[] args){
-        int MAX_ORDER = 3;
+        int MAX_ORDER = 25;
         int noOrders = 0;
         String[] Order = new String[MAX_ORDER];
         String ingred = "";
@@ -51,16 +51,16 @@ public class Week2ChallengeChipotleJr {
             // randomly choose each ingredients
             ingred = "Burrito " + (i+1) + ": ";
 
-            ingred = ingred + pickRice(szRice);
-            ingred = ingred + pickMeat(szMeat);
-            ingred = ingred + pickBean(szBean);
-            ingred = ingred + pickSalsa(szSalsa);
-            ingred = ingred + pickVeggies(szVeggies);
-            ingred = ingred + pickCheese();
-            ingred = ingred + pickGuac();
-            ingred = ingred + pickQueso();
+            ingred += pickItem(szRice, RiceArray);
+            ingred += pickItem(szMeat, MeatArray);
+            ingred += pickItem(szBean, BeanArray);
+            ingred += pickItem(szSalsa, SalsaArray);
+            ingred += pickItem(szVeggies, VeggieArray);
 
-            Order[i]= ingred + pickSourCream();              // save in the Order array
+            ingred = ingred + pickItem("cheese");
+            ingred = ingred + pickItem("guac");
+            ingred = ingred + pickItem("queso");
+            Order[i] = ingred + pickItem("sour cream"); // save in the Order array
             ingred = "";
         }
 
@@ -68,14 +68,15 @@ public class Week2ChallengeChipotleJr {
             System.out.println(itm);
     }
 
-    public static String pickRice(int varMax){
+
+    public static String pickItem(int varMax, String[]varArray){
         String choice="", tmp="";
         Random random = new Random();
 
         // randomly select rice
         int idx = random.nextInt(varMax);
 
-        tmp = RiceArray[idx];
+        tmp = varArray[idx];
         if (tmp.compareToIgnoreCase("none") == 0)
             choice = "";
         else
@@ -84,115 +85,18 @@ public class Week2ChallengeChipotleJr {
         return (choice);
     }
 
-    public static String pickMeat(int varMax){
-        String choice = "";
-        Random random = new Random();
-
-        // randomly select meat
-        int idx = random.nextInt(varMax);
-        choice = MeatArray[idx] + ", ";
-
-        return (choice);
-    }
-
-    public static String pickBean(int varMax){
-        String choice, tmp;
-        Random random = new Random();
-
-        // randomly select beans
-        int idx = random.nextInt(varMax);
-
-        tmp = BeanArray[idx];
-        if (tmp.compareToIgnoreCase("none") == 0)
-            choice = "";
-        else
-            choice = tmp + ", ";
-
-        return (choice);
-    }
-
-    public static String pickSalsa(int varMax){
-        String choice, tmp;
-        Random random = new Random();
-
-        // randomly select veggies
-        int idx = random.nextInt(varMax);
-
-        tmp = SalsaArray[idx];
-        if (tmp.compareToIgnoreCase("none") == 0)
-            choice = "";
-        else
-            choice = tmp + ", ";
-
-
-        return (choice);
-    }
-
-    public static String pickVeggies(int varMax){
-        String choice="", tmp="";
-        Random random = new Random();
-
-        // randomly select veggies
-        int idx = random.nextInt(varMax);
-
-        tmp = VeggieArray[idx];
-        if (tmp.compareToIgnoreCase("none") == 0)
-            choice = "";
-        else
-            choice = tmp + ", ";
-
-        return (choice);
-    }
-
-    public static String pickCheese(){
+    public static String pickItem(String varItem){
         String choice;
         Random random = new Random();
 
-        // randomly select Cheese
+        // randomly select yes or no
         if (random.nextBoolean())
-             choice = "cheese, ";
+             choice = varItem + ", ";
         else
-             choice = "no cheese, ";
+             choice = "";
 
         return (choice);
     }
 
-    public static String pickGuac(){
-        String choice;
-        Random random = new Random();
 
-        // randomly select Guac
-        if (random.nextBoolean())
-            choice = "guac, ";
-        else
-            choice = "no guac, ";
-
-        return (choice);
-    }
-
-    public static String pickQueso(){
-        String choice;
-        Random random = new Random();
-
-        // randomly select Queso
-        if (random.nextBoolean())
-            choice = "queso, ";
-        else
-            choice = "no queso, ";
-
-        return (choice);
-    }
-
-    public static String pickSourCream(){
-        String choice;
-        Random random = new Random();
-
-        // randomly select Sour Cream
-        if (random.nextBoolean())
-            choice = "sour cream";
-        else
-            choice = "no sour cream";
-
-        return (choice);
-    }
 }
