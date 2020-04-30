@@ -19,25 +19,19 @@
  * main whose sole purpose is to calculate the price of the burrito.
  */
 
-import java.util.ArrayList;
 import java.util.Random;
 
-
-
 public class Week2ChallengeChipotleJr {
-    // initialize ingredients arrays
-    private static String[] RiceArray = {"white rice", "brown rice", "none"};
-    private static String[] MeatArray = {"chicken", "steak", "carnidas", "chorizo",
-            "sofritas", "veggies"};
-    private static String[] BeanArray = {"pinto bean", "black bean", "none"};
-    private static String[] SalsaArray = {"mild salsa", "medium salsa", "hot salsa", "none", "all salsa"};
-    private static String[] VeggieArray = {"lettuce", "fajita veggies", "none", "all veggies"};
-
-
-    // main program
     public static void main(String[] args) {
+        // initialize ingredients arrays
+        String[] RiceArray = {"white rice", "brown rice", "no rice", "all rice"};
+        String[] MeatArray = {"chicken", "steak", "carnidas", "chorizo", "sofritas", "veggies"};
+        String[] BeanArray = {"pinto beans", "black beans", "no beans", "all beans"};
+        String[] SalsaArray = {"mild salsa", "medium salsa", "hot salsa", "no salsa", "all salsa"};
+        String[] VeggieArray = {"lettuce", "fajita veggies", "no veggies", "all veggies"};
+
         int MAX_ORDER = 25;
-        String[] Order = new String[MAX_ORDER];
+        String[] allOrder = new String[MAX_ORDER];
         String ingred;
 
         int szRice = RiceArray.length;
@@ -58,14 +52,14 @@ public class Week2ChallengeChipotleJr {
             ingred = ingred + pickItem("cheese");
             ingred = ingred + pickItem("guac");
             ingred = ingred + pickItem("queso");
-            Order[i] = ingred + pickItem("sour cream"); // save in the Order array
+            allOrder[i] = ingred + pickItem("sour cream"); // save in the Order array
         }
 
         // compute the price of each burrito and their sum
         double amt = 0, total = 0;
         int idx = 1, size = 0;
 
-        for (String itm : Order) {
+        for (String itm : allOrder) {
             // compute the amount for an item
             amt = computeAmount(itm);
 
@@ -95,20 +89,17 @@ public class Week2ChallengeChipotleJr {
      */
 
     public static String pickItem(int varMax, String[] varArray) {
-        String choice = "", tmp = "";
+        String choice = "";
         Random random = new Random();
 
         // randomly select an item between 0 and max size of the array (not inclusive)
         int idx = random.nextInt(varMax);
 
-        tmp = varArray[idx];
-
-        if (tmp.compareToIgnoreCase("none") == 0)
-            choice = "";
-        else
-            choice = tmp + ", ";
+        choice = varArray[idx] + ", ";
 
         return (choice);
+
+
     }
 
     /*
@@ -136,18 +127,18 @@ public class Week2ChallengeChipotleJr {
      * and price of a burrito. The base price of a burrito is $3.00 and each
      * ingredient is $0.50.
      *
-     * String varItem has ',' as a item delimiter.
+     * String varItem has ',' as a item delimiter and ends with ", ".
      */
-    public static double computeAmount(String varItem) {
+    public static double computeAmount(String allItems) {
         double totalAmt = 3.00;                   // base price
-        String ingred = varItem;
-        int j = 0, numItems = 0;
+        int numItems = -1;                        // allItems ends with ", "
 
         // compute the number of items using ',' as a delimiter
-        while (ingred.contains(",")) {
-            j = ingred.indexOf(",", 0);
-            numItems++;
-            ingred = ingred.substring(j + 1);
+        String items[] = allItems.split(",");
+        for (int idx = 0; idx < items.length; idx++){
+            if (!items[idx].contains("no")) {
+                numItems++;
+            }
         }
 
         totalAmt = totalAmt + (0.5 * numItems);
